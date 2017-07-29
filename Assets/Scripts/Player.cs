@@ -10,4 +10,6 @@ public class Player : MonoBehaviour {
     public Color highlightColour;
     public Color startingAreaColour;
 
+    public int TurnNumber { get; set; }
+
 }

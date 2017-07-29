@@ -38,6 +38,7 @@ GameObject:
   - component: {fileID: 33228750674129560}
   - component: {fileID: 23082303415570680}
   - component: {fileID: 114104981560726228}
+  - component: {fileID: 64512969911992930}
   m_Layer: 0
   m_Name: Hex
   m_TagString: Untagged
@@ -235,7 +236,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: b26587423a9658546af1e524a2f43f5c, type: 2}
+  - {fileID: 2100000, guid: 920789e53fa34d84786d443ba935c8c2, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -260,6 +261,20 @@ MeshFilter:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1290119918623048}
+  m_Mesh: {fileID: 4300000, guid: 798b171255ceab941a10703a76b75799, type: 3}
+--- !u!64 &64512969911992930
+MeshCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1290119918623048}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Convex: 0
+  m_InflateMesh: 0
+  m_SkinWidth: 0.01
   m_Mesh: {fileID: 4300000, guid: 798b171255ceab941a10703a76b75799, type: 3}
 --- !u!65 &65079344020859848
 BoxCollider:
@@ -344,5 +359,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e642629e7111054a84f31ab636d163d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isStartPositionForP1: 1
-  isStartPositionForP2: 0
+  isPossibleStartingPositionForPlayer: {fileID: 0}
+  gameController: {fileID: 114623911883250542, guid: 428f0a340b2b03d4cbffe3f2ba744b23,
+    type: 2}

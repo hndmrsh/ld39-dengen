@@ -4,8 +4,13 @@ using UnityEngine;
 
 public class Hex : MonoBehaviour {
 
-
     public Player isPossibleStartingPositionForPlayer;
+    public GameController gameController;
+
+    public bool CurrentlySelectable { get; set; }
+
+    private Color cachedMaterialColour;
+    
 
     // Use this for initialization
     void Start () {
@@ -16,4 +21,19 @@ public class Hex : MonoBehaviour {
 	void Update () {
 		
 	}
+
+    private void OnMouseEnter()
+    {
+        cachedMaterialColour = GetComponent<Renderer>().material.color;
+
+        if (CurrentlySelectable)
+        {
+            GetComponent<Renderer>().material.color = gameController.CurrentPlayer.highlightColour;
+        }
+    }
+
+    private void OnMouseExit()
+    {
+        GetComponent<Renderer>().material.color = cachedMaterialColour;
+    }
 }
