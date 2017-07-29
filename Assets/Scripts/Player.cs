@@ -8,8 +8,13 @@ public class Player : MonoBehaviour {
 
     public Color controlledColour;
     public Color highlightColour;
-    public Color startingAreaColour;
+    public Color placeableColour;
 
     public int TurnNumber { get; set; }
+    public Hex HomeBaseTile { get; set; }
 
+    public bool HasChosenHomeBaseLocation()
+    {
+        return TurnNumber > 0;
+    }
 }
