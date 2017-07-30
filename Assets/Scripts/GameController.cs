@@ -86,7 +86,7 @@ public class GameController : MonoBehaviour
         DeselectAll(player1Menu);
         DeselectAll(player2Menu);
 
-        CalculateCosts(CurrentPlayer);
+        CalculateCostsAndInfluences(CurrentPlayer);
 
         CurrentPlayer.TurnNumber++;
 
@@ -102,16 +102,21 @@ public class GameController : MonoBehaviour
         }
     }
 
-    private void CalculateCosts(Player player)
+    private void CalculateCostsAndInfluences(Player player)
     {
         int sumCost = 0;
         foreach (Transform child in level.transform)
         {
             Hex hex = child.GetComponent<Hex>();
-            if (hex && hex.ControllingPlayer == CurrentPlayer)
+            if (hex)
             {
-                sumCost += hex.Structure.Cost;
-                sumCost -= hex.bonus;
+                hex.UpdateInfluences();
+
+                if (hex.ControllingPlayer == CurrentPlayer)
+                {
+                    sumCost += hex.Structure.Cost;
+                    sumCost -= hex.bonus;
+                }
             }
         }
         

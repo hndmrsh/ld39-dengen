@@ -23,7 +23,7 @@ public class StructurePanel : MonoBehaviour
     {
         if (template)
         {
-            costText.text = (-template.Cost).ToString();
+            costText.text = template.Cost.ToString();
         }
     }
 

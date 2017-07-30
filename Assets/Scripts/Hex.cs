@@ -18,6 +18,9 @@ public class Hex : MonoBehaviour
 
     private List<Hex> neighbours;
 
+    private int ownerInfluence;
+    private int attackerInfluence;
+
     void Start()
     {
         neighbours = new List<Hex>();
@@ -93,16 +96,54 @@ public class Hex : MonoBehaviour
         neighbours.Add(other.GetComponent<Hex>());
     }
 
+    public void UpdateInfluences()
+    {
+        ownerInfluence = 0;
+        attackerInfluence = 0;
+
+        // we only calculate influence on tiles which have an owner, as only they can be attacked
+        if (ControllingPlayer)
+        {
+            // ownerInfluence += Structure.Cost;
+
+            foreach (Hex neighbour in neighbours)
+            {
+                if (neighbour && neighbour.ControllingPlayer)
+                {
+                    if (neighbour.ControllingPlayer == ControllingPlayer)
+                    {
+                        ownerInfluence += neighbour.Structure.Cost;
+                    }
+                    else
+                    {
+                        attackerInfluence += neighbour.Structure.Cost;
+                    }
+                }
+            }
+        }
+
+        
+    }
+
     public bool IsSelectableByPlayer(Player player)
     {
         foreach (Hex neighbour in neighbours)
         {
-            if (!Structure && neighbour && neighbour.ControllingPlayer == player)
+            if (neighbour)
             {
-                return true;
+                if ((!Structure && neighbour.ControllingPlayer == player) ||
+                    (Structure && neighbour.ControllingPlayer != player && CanAttackSpace(player)))
+                {
+                    return true;
+                }
             }
         }
 
         return false;
+    }
+
+    private bool CanAttackSpace(Player player)
+    {
+        return player != ControllingPlayer && attackerInfluence > ownerInfluence;
     }
 }
