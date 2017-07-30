@@ -2,14 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HomeBase : Structure
+public class BasicStructure : Structure
 {
 
     public override int Cost
     {
         get
         {
-            return 5;
+            return 3;
         }
     }
 

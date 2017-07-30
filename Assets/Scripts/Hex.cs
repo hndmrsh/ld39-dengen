@@ -3,7 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Hex : MonoBehaviour {
+public class Hex : MonoBehaviour
+{
 
     public Player isPossibleStartingPositionForPlayer;
     public GameController gameController;
@@ -12,20 +13,14 @@ public class Hex : MonoBehaviour {
 
     public bool CurrentlySelectable { get; set; }
     public Player ControllingPlayer { get; set; }
+    public Structure Structure { get; set; }
 
     private List<Hex> neighbours;
-    private Structure structure;
 
-
-    // Use this for initialization
-    void Start () {
+    void Start()
+    {
         neighbours = new List<Hex>();
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+    }
 
     private void OnMouseEnter()
     {
@@ -44,10 +39,15 @@ public class Hex : MonoBehaviour {
     {
         if (CurrentlySelectable)
         {
-            if(!gameController.CurrentPlayer.HasChosenHomeBaseLocation())
+            if (!gameController.CurrentPlayer.HasChosenHomeBaseLocation)
             {
-                BuildStructure(gameController.homeBase);
                 gameController.CurrentPlayer.HomeBaseTile = this;
+                Structure = gameController.homeBase;
+                BuildStructure(gameController.homeBase);
+            } else if (gameController.SelectedStructure)
+            {
+                Structure = gameController.SelectedStructure;
+                BuildStructure(gameController.SelectedStructure);
             }
         }
     }
