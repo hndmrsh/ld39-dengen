@@ -46,26 +46,31 @@ public class Hex : MonoBehaviour
             if (!gameController.CurrentPlayer.HasChosenHomeBaseLocation)
             {
                 gameController.CurrentPlayer.HomeBaseTile = this;
-                Structure = gameController.homeBase;
                 BuildStructure(gameController.homeBase);
             } else if (gameController.SelectedStructure)
             {
-                Structure = gameController.SelectedStructure;
                 BuildStructure(gameController.SelectedStructure);
             }
         }
     }
 
-    void BuildStructure(Structure structure)
+    void BuildStructure(Structure structureToBuild)
     {
+        Debug.Log("building");
+        if(Structure)
+        {
+            Debug.Log("destroying");
+            Destroy(Structure.gameObject);
+        }
+
         ControllingPlayer = gameController.CurrentPlayer;
-        structure = GameObject.Instantiate(structure.gameObject, transform).GetComponent<Structure>();
+        Structure = Instantiate(structureToBuild, transform).GetComponent<Structure>();
 
         GetComponent<Renderer>().material.color = GetNonHighlightedColour();
 
         if (gameController.CurrentPlayer == gameController.player1)
         {
-            structure.transform.Rotate(Vector3.forward * 180);
+            Structure.transform.Rotate(Vector3.forward * 180);
         }
 
         gameController.EndTurn();
@@ -132,7 +137,8 @@ public class Hex : MonoBehaviour
             if (neighbour)
             {
                 if ((!Structure && neighbour.ControllingPlayer == player) ||
-                    (Structure && neighbour.ControllingPlayer != player && CanAttackSpace(player)))
+                    (Structure && ControllingPlayer == player && !(Structure is HomeBase) && Structure.GetType() != gameController.SelectedStructure.GetType()) ||
+                    (Structure && ControllingPlayer != player && CanAttackSpace(player)))
                 {
                     return true;
                 }

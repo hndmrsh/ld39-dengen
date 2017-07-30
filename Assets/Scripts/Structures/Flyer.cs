@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HomeBase : Structure
+public class Flyer : Structure
 {
 
     public override int Cost

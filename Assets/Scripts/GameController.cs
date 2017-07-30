@@ -56,10 +56,7 @@ public class GameController : MonoBehaviour
         set
         {
             selectedStructure = value;
-            if (turnState != TurnState.PlacePiece)
-            {
-                StartPlacePieceTurn();
-            }
+            StartPlacePieceTurn();
         }
     }
 
