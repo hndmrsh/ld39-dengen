@@ -7,6 +7,7 @@ public class Hex : MonoBehaviour
 {
 
     public Player isPossibleStartingPositionForPlayer;
+    public int bonus = 0;
     public GameController gameController;
 
     public GameObject[] triggers;
@@ -96,7 +97,7 @@ public class Hex : MonoBehaviour
     {
         foreach (Hex neighbour in neighbours)
         {
-            if (neighbour && neighbour.ControllingPlayer == player)
+            if (!Structure && neighbour && neighbour.ControllingPlayer == player)
             {
                 return true;
             }

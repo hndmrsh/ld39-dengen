@@ -14,6 +14,7 @@ public class Player : MonoBehaviour
     public Color menuUnhighlightedColour;
 
     public Text remainingPowerText;
+    public Text changePowerText;
 
     public int TurnNumber { get; set; }
     public Hex HomeBaseTile { get; set; }
@@ -27,8 +28,8 @@ public class Player : MonoBehaviour
 
         set
         {
-            remainingPower = value;
-            remainingPowerText.text = value.ToString();
+            remainingPower = Mathf.Min(value, GameController.MAX_POWER);
+            remainingPowerText.text = remainingPower.ToString();
         }
     }
     
@@ -43,7 +44,6 @@ public class Player : MonoBehaviour
     private void Start()
     {
         RemainingPower = GameController.DEAFULT_STARTING_POWER;
-
     }
 
 

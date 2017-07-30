@@ -16,10 +16,13 @@ public class GameController : MonoBehaviour
     private const string SELECT_PIECE_INSTRUCTIONS = "Select your next structure";
     private const string PLACE_PIECE_INSTRUCTIONS = "Place your structure";
 
-    public const int DEAFULT_STARTING_POWER = 20;
+    public const int DEAFULT_STARTING_POWER = 200;
+    public const int MAX_POWER = 999;
 
     public Player player1;
     public Player player2;
+
+    public Canvas canvas;
 
     public GameObject player1Menu;
     public GameObject player2Menu;
@@ -34,6 +37,8 @@ public class GameController : MonoBehaviour
     public Text instructionsText;
 
     public Player CurrentPlayer { get; set; }
+
+    public Text bonusTextTemplate;
 
     [Header("Structure templates")]
     public Structure homeBase;
@@ -60,6 +65,16 @@ public class GameController : MonoBehaviour
 
     void Start()
     {
+        foreach (Transform child in level.transform)
+        {
+            Hex hex = child.GetComponent<Hex>();
+            if (hex && hex.bonus > 0)
+            {
+                Text bonusText = Instantiate(bonusTextTemplate, Camera.main.WorldToScreenPoint(hex.transform.position), Quaternion.identity, canvas.transform);
+                bonusText.text = "+" + hex.bonus;
+            }
+        }
+
         CurrentPlayer = player1;
         NextTurn();
     }
@@ -89,17 +104,23 @@ public class GameController : MonoBehaviour
 
     private void CalculateCosts(Player player)
     {
+        int sumCost = 0;
+        foreach (Transform child in level.transform)
+        {
+            Hex hex = child.GetComponent<Hex>();
+            if (hex && hex.ControllingPlayer == CurrentPlayer)
+            {
+                sumCost += hex.Structure.Cost;
+                sumCost -= hex.bonus;
+            }
+        }
+        
+        player.changePowerText.text = "(" + (-sumCost).ToString() + ")";
+
+        // only actually subtract power if we are after the first turn
         if (player.HasChosenHomeBaseLocation)
         {
-            foreach (Transform child in level.transform)
-            {
-                Hex hex = child.GetComponent<Hex>();
-                if (hex && hex.ControllingPlayer == CurrentPlayer)
-                {
-                    player.RemainingPower -= hex.Structure.Cost;
-                    hex.GetComponent<Renderer>().material.color = CurrentPlayer.placeableColour;
-                }
-            }
+            player.RemainingPower -= sumCost;
         }
     }
 
@@ -204,6 +225,13 @@ public class GameController : MonoBehaviour
         Text winnerText = gameOverPanel.GetComponentInChildren<Text>();
         winnerText.text = winner.playerName.ToUpper() + " WINS";
         winnerText.color = winner.controlledColour;
+
+        foreach (Transform child in level.transform)
+        {
+            Hex hex = child.GetComponent<Hex>();
+            hex.CurrentlySelectable = false;
+            hex.GetComponent<Renderer>().material.color = hex.GetNonHighlightedColour();
+        }
     }
 
 }

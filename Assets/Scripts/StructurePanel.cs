@@ -7,6 +7,7 @@ public class StructurePanel : MonoBehaviour
 {
 
     public GameController gameController;
+    public Text costText;
     public Player owner;
     public Structure template;
 
@@ -15,6 +16,14 @@ public class StructurePanel : MonoBehaviour
         get
         {
             return gameController.CurrentPlayer == owner && owner.HasChosenHomeBaseLocation;
+        }
+    }
+
+    private void Start()
+    {
+        if (template)
+        {
+            costText.text = (-template.Cost).ToString();
         }
     }
 
@@ -30,7 +39,7 @@ public class StructurePanel : MonoBehaviour
     {
         if (IsSelectable)
         {
-            if (gameController.SelectedStructure == template)
+            if (!IsSkipTurnButton() && gameController.SelectedStructure == template)
             {
                 GetComponent<Image>().color = owner.controlledColour;
             }
@@ -45,13 +54,25 @@ public class StructurePanel : MonoBehaviour
     {
         if (IsSelectable)
         {
-            gameController.SelectedStructure = template;
+            if (!IsSkipTurnButton())
+            {
+                gameController.SelectedStructure = template;
+            }
+            else
+            {
+                gameController.EndTurn();
+            }
         }
     }
 
     public void Deselect()
     {
         GetComponent<Image>().color = owner.menuUnhighlightedColour;
+    }
+
+    private bool IsSkipTurnButton()
+    {
+        return !template;
     }
 
 }

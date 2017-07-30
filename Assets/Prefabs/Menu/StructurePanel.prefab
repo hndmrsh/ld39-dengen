@@ -140,7 +140,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gameController: {fileID: 0}
+  costText: {fileID: 114648000232726258}
   owner: {fileID: 0}
+  template: {fileID: 114550561781781534, guid: fba78ded9c1772441a2dc192a2dee616, type: 2}
 --- !u!114 &114215346529861876
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -226,7 +228,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: -3
+  m_Text: 0
 --- !u!222 &222075876407422302
 CanvasRenderer:
   m_ObjectHideFlags: 1
