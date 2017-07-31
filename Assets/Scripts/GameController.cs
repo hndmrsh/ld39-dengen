@@ -28,6 +28,7 @@ public class GameController : MonoBehaviour
     public GameObject player2Menu;
 
     public GameObject gameOverPanel;
+    public GameObject instructionsPanel;
 
     public Color defaultColour;
 
@@ -71,7 +72,11 @@ public class GameController : MonoBehaviour
                 bonusText.text = "+" + hex.bonus;
             }
         }
+    }
 
+    public void StartGame()
+    {
+        instructionsPanel.SetActive(false);
         CurrentPlayer = player1;
         NextTurn();
     }
@@ -80,8 +85,8 @@ public class GameController : MonoBehaviour
     {
         this.selectedStructure = null;
 
-        DeselectAll(player1Menu);
-        DeselectAll(player2Menu);
+        DeselectAllPanels(player1Menu);
+        DeselectAllPanels(player2Menu);
 
         CalculateCostsAndInfluences(CurrentPlayer);
 
@@ -116,8 +121,9 @@ public class GameController : MonoBehaviour
                 }
             }
         }
-        
-        player.changePowerText.text = "(" + (-sumCost).ToString() + ")";
+
+        string powerText = sumCost == 0 ? "0" : (sumCost > 0 ? (-sumCost).ToString() : "+" + -sumCost);
+        player.changePowerText.text = "(" + powerText + ")";
 
         // only actually subtract power if we are after the first turn
         if (player.HasChosenHomeBaseLocation)
@@ -138,7 +144,19 @@ public class GameController : MonoBehaviour
         }
     }
 
-    private void DeselectAll(GameObject menu)
+    public void DeselectAllPanelsCurrentPlayer()
+    {
+        if (CurrentPlayer == player1)
+        {
+            DeselectAllPanels(player1Menu);
+        }
+        else
+        {
+            DeselectAllPanels(player2Menu);
+        }
+    }
+
+    private void DeselectAllPanels(GameObject menu)
     {
         foreach (StructurePanel panel in menu.GetComponentsInChildren<StructurePanel>())
         {
@@ -220,7 +238,7 @@ public class GameController : MonoBehaviour
         }
     }
 
-    private void EndGame(Player winner)
+    public void EndGame(Player winner)
     {
         gameOverPanel.SetActive(true);
 

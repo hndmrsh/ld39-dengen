@@ -56,6 +56,8 @@ public class StructurePanel : MonoBehaviour
         {
             if (!IsSkipTurnButton())
             {
+                gameController.DeselectAllPanelsCurrentPlayer();
+                GetComponent<Image>().color = owner.controlledColour;
                 gameController.SelectedStructure = template;
             }
             else

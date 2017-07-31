@@ -47,7 +47,8 @@ public class Hex : MonoBehaviour
             {
                 gameController.CurrentPlayer.HomeBaseTile = this;
                 BuildStructure(gameController.homeBase);
-            } else if (gameController.SelectedStructure)
+            }
+            else if (gameController.SelectedStructure)
             {
                 BuildStructure(gameController.SelectedStructure);
             }
@@ -56,42 +57,48 @@ public class Hex : MonoBehaviour
 
     void BuildStructure(Structure structureToBuild)
     {
-        Debug.Log("building");
-        if(Structure)
+        bool tookOpponentBase = false;
+
+        if (Structure)
         {
-            Debug.Log("destroying");
+            tookOpponentBase = Structure is HomeBase;
             Destroy(Structure.gameObject);
         }
 
         ControllingPlayer = gameController.CurrentPlayer;
         Structure = Instantiate(structureToBuild, transform).GetComponent<Structure>();
-
+        
         GetComponent<Renderer>().material.color = GetNonHighlightedColour();
+        Structure.GetComponent<Renderer>().material.color = ControllingPlayer.highlightColour;
 
         if (gameController.CurrentPlayer == gameController.player1)
         {
             Structure.transform.Rotate(Vector3.forward * 180);
         }
 
-        gameController.EndTurn();
+        if (!tookOpponentBase)
+        {
+            gameController.EndTurn();
+        }
+        else
+        {
+            gameController.EndGame(ControllingPlayer);
+        }
     }
 
     public Color GetNonHighlightedColour()
     {
-        if (ControllingPlayer)
+        if (CurrentlySelectable)
+        {
+            return gameController.CurrentPlayer.placeableColour;
+        }
+        else if (ControllingPlayer)
         {
             return ControllingPlayer.controlledColour;
         }
         else
         {
-            if (CurrentlySelectable)
-            {
-                return gameController.CurrentPlayer.placeableColour;
-            }
-            else
-            {
-                return gameController.defaultColour;
-            }
+            return gameController.defaultColour;
         }
     }
 
@@ -127,7 +134,7 @@ public class Hex : MonoBehaviour
             }
         }
 
-        
+
     }
 
     public bool IsSelectableByPlayer(Player player)
